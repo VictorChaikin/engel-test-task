@@ -1,0 +1,22 @@
+
+
+.header {
+  background-color: #444444;
+  height: 30px;
+  padding: 16px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px; 
+  gap: 32px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}

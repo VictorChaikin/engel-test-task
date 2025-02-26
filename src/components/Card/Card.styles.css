@@ -1,0 +1,32 @@
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-content {
+  display: flex;
+}
+
+.card-props {
+  margin: 0 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.property {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.price {
+  border-top: 1px solid lightgray
+}
+
+.icon:hover {
+  cursor: pointer;
+}
