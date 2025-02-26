@@ -13,13 +13,13 @@ enum SortingEnum {
 }
 
 const sortingOptions = [
-  { label: 'No Sorting', value: SortingEnum['No Sorting']},
-  { label: 'Plot size ASC', value: SortingEnum['Plot size ASC']},
-  { label: 'Plot size DESC', value: SortingEnum['Plot size DESC']},
-  { label: 'Price ASC', value: SortingEnum['Price ASC']},
-  { label: 'Price DESC', value: SortingEnum['Price DESC']},
-  { label: 'Rooms ASC', value: SortingEnum['Rooms ASC']},
-  { label: 'Rooms DESC', value: SortingEnum['Rooms DESC']}
+  { label: 'No Sorting', value: SortingEnum['No Sorting'] },
+  { label: 'Plot size ASC', value: SortingEnum['Plot size ASC'] },
+  { label: 'Plot size DESC', value: SortingEnum['Plot size DESC'] },
+  { label: 'Price ASC', value: SortingEnum['Price ASC'] },
+  { label: 'Price DESC', value: SortingEnum['Price DESC'] },
+  { label: 'Rooms ASC', value: SortingEnum['Rooms ASC'] },
+  { label: 'Rooms DESC', value: SortingEnum['Rooms DESC'] }
 ];
 
 enum FiltersEnum {
@@ -29,26 +29,26 @@ enum FiltersEnum {
 }
 
 const filteringOptions = [
-  { label: 'All', value: FiltersEnum.All},
-  { label: 'Houses', value: FiltersEnum.Houses},
-  { label: 'Appartments', value: FiltersEnum.Appartments},
+  { label: 'All', value: FiltersEnum.All },
+  { label: 'Houses', value: FiltersEnum.Houses },
+  { label: 'Appartments', value: FiltersEnum.Appartments },
 ];
 
-const sortAsc = ( field: string) => (a: any, b: any) => {
-  if ( a[field] < b[field] ){
+const sortAsc = (field: string) => (a: any, b: any) => {
+  if (a[field] < b[field]) {
     return -1;
   }
-  if ( a[field] > b[field] ){
+  if (a[field] > b[field]) {
     return 1;
   }
   return 0;
 }
 
-const sortDesc = ( field: string) => (a: any, b: any) => {
-  if ( a[field] < b[field] ){
+const sortDesc = (field: string) => (a: any, b: any) => {
+  if (a[field] < b[field]) {
     return 1;
   }
-  if ( a[field] > b[field] ){
+  if (a[field] > b[field]) {
     return -1;
   }
   return 0;
@@ -58,6 +58,7 @@ export const useSortFilterCards = (cards: ICard[]) => {
   const [filteredAndSortedCards, setFilteredAndSortedCards] = useState<ICard[]>([]);
   const [currentSorting, setCurrentSoring] = useState<SortingEnum>(SortingEnum['No Sorting']);
   const [currentFiltering, setCurrentFiltering] = useState<FiltersEnum>(FiltersEnum.All);
+  const [search, setSearch] = useState('');
 
   const onSelectSorting = (value: SortingEnum) => {
     setCurrentSoring(value);
@@ -82,7 +83,7 @@ export const useSortFilterCards = (cards: ICard[]) => {
   const handleSorting = (cards: ICard[], type?: SortingEnum): ICard[] => {
     let sortedCards = cards;
 
-    switch(type) {
+    switch (type) {
       case SortingEnum['Plot size ASC']:
         sortedCards = cards.sort(sortAsc('plotSize')); break;
       case SortingEnum['Plot size DESC']:
@@ -100,10 +101,20 @@ export const useSortFilterCards = (cards: ICard[]) => {
     return sortedCards;
   };
 
+  const handleSearch = (cards: ICard[], search?: string): ICard[] => {
+    if (!search?.length) {
+      return cards;
+    }
+
+    return cards.filter(card => card.title.startsWith(search));
+  };
+
   useEffect(() => {
-    let newCards = [...handleFiltering(cards, currentFiltering)];
+    const searchedCards = handleSearch(cards, search);
+    const newCards = [...handleFiltering(searchedCards, currentFiltering)];
+
     setFilteredAndSortedCards([...handleSorting(newCards, currentSorting)]);
-  }, [cards, currentFiltering, currentSorting])
+  }, [cards, search, currentFiltering, currentSorting])
 
   return {
     currentSorting,
@@ -112,6 +123,7 @@ export const useSortFilterCards = (cards: ICard[]) => {
     filteringOptions,
     onSelectFiltering,
     onSelectSorting,
+    onSetSearch: (val: string) => setSearch(val),
     filteredAndSortedCards
   }
 }

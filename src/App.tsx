@@ -6,6 +6,7 @@ import { AddCardSidebarBtn } from './components/AddCardSidebar/AddCardSidebar.co
 import { useAppApi } from './useAppApi';
 import { CustomSelect } from './components/Select/Select.component';
 import { useSortFilterCards } from './useSortFilterCards';
+import { TextField } from '@mui/material';
 
 const App = () => {
   const { createCard, deleteCard, cards } = useAppApi();
@@ -15,14 +16,21 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <div className='selectors'>
-          <CustomSelect 
+          <TextField
+            style={{ minWidth: 400 }}
+            placeholder="Search..."
+            type='text'
+            onChange={(e) => sortingFilteringData.onSetSearch(e.target.value)}
+          />
+
+          <CustomSelect
             label='Sort by'
             value={sortingFilteringData.currentSorting}
             options={sortingFilteringData.sortingOptions}
             onSelect={sortingFilteringData.onSelectSorting as unknown as (value: string) => void}
           />
 
-          <CustomSelect 
+          <CustomSelect
             label='Filter by'
             value={sortingFilteringData.currentFiltering}
             options={sortingFilteringData.filteringOptions}
